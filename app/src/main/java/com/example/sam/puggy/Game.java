@@ -73,7 +73,7 @@ public class Game {
                 nudge();
                 ArrayList<Symbol> result2 = spinWheels();
                 while (payoutCheck(result2, fee)) {
-                    result = spinWheels();
+                    result2 = spinWheels();
                 }
                 viewer.result(result2);
                 if (winCheck(result2)) {
