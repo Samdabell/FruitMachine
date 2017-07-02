@@ -60,16 +60,30 @@ public class Game {
             money.receiveMoney(fee);
             viewer.spin();
             ArrayList<Symbol> result = spinWheels();
-//        while (winCheck() && money.getMoney() >= calculateWinnings(result.get(0), fee)) {
-//            result = spinWheels();
-//        }
+            while (payoutCheck(result, fee)) {
+                result = spinWheels(); //respin if machine can't payout
+            }
             viewer.result(result);
             if (winCheck(result)) {
                 viewer.winMessage(calculateWinnings(result.get(0), fee));
                 payout(result.get(0), fee);
             } else {
                 viewer.loseMessage();
+                hold();
+                nudge();
+                ArrayList<Symbol> result2 = spinWheels();
+                while (payoutCheck(result2, fee)) {
+                    result = spinWheels();
+                }
+                viewer.result(result2);
+                if (winCheck(result2)) {
+                    viewer.winMessage(calculateWinnings(result2.get(0), fee));
+                    payout(result2.get(0), fee);
+                } else {
+                    viewer.loseMessage();
+                }
             }
+            holdNudgeReset();
             playAgain();
         }
     }
@@ -104,6 +118,34 @@ public class Game {
         } else {
             viewer.outOfMoney();
             setReplay("no");
+        }
+    }
+
+    public void hold(){
+        for (int i = 0; i < 3; i++){
+            viewer.askHold(i+1);
+            wheels.get(i).setHoldCheck(Interface.inputString().toLowerCase());
+        }
+    }
+
+    public void nudge(){
+        for (int i = 0; i < 3; i++){
+            if (wheels.get(i).getHoldCheck().equals("no")) {
+                viewer.askNudge(i + 1);
+                wheels.get(i).setNudgeCheck(Interface.inputString().toLowerCase());
+            }
+        }
+    }
+
+    public boolean payoutCheck(ArrayList<Symbol> result, int fee){
+        return (money.getMoney() < calculateWinnings(result.get(0), fee));
+
+    }
+
+    public void holdNudgeReset(){
+        for (Wheel wheel : wheels){
+            wheel.setHoldCheck("no");
+            wheel.setNudgeCheck("no");
         }
     }
 }

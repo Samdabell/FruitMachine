@@ -6,7 +6,9 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 import static com.example.sam.puggy.Symbol.BELL;
+import static com.example.sam.puggy.Symbol.JACKPOT;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -38,5 +40,15 @@ public class GameTest {
         game.payout(BELL, 2);
         assertEquals(18, player.getMoney());
         assertEquals(492, game.getMoney().getMoney());
+    }
+
+    @Test
+    public void testPayoutCheck(){
+        ArrayList<Symbol> result = new ArrayList<>();
+        result.add(JACKPOT);
+        result.add(JACKPOT);
+        result.add(JACKPOT);
+        assertTrue(game.payoutCheck(result, 100));
+        assertFalse(game.payoutCheck(result, 1));
     }
 }

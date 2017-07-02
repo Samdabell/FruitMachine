@@ -11,10 +11,30 @@ import java.util.Random;
 public class Wheel {
 
     ArrayList<Symbol> wheel;
+    String holdCheck;
+    String nudgeCheck;
 
     public Wheel(){
         wheel = new ArrayList<Symbol>();
+        holdCheck = "no";
+        nudgeCheck = "no";
         populate();
+    }
+
+    public String getHoldCheck() {
+        return holdCheck;
+    }
+
+    public void setHoldCheck(String holdCheck) {
+        this.holdCheck = holdCheck;
+    }
+
+    public String getNudgeCheck() {
+        return nudgeCheck;
+    }
+
+    public void setNudgeCheck(String nudgeCheck) {
+        this.nudgeCheck = nudgeCheck;
     }
 
     public void populate(){
@@ -24,9 +44,11 @@ public class Wheel {
     }
 
     public void spin(){
-        Random rand = new Random();
-        int spins = rand.nextInt(wheel.size());
-        Collections.rotate(wheel, spins);
+        if (holdCheck.equals("no")) {
+            Random rand = new Random();
+            int spins = rand.nextInt(wheel.size());
+            Collections.rotate(wheel, spins);
+        }
     }
 
     public Symbol result(){
@@ -34,8 +56,13 @@ public class Wheel {
     }
 
     public Symbol run(){
-        spin();
-        return result();
+        if (nudgeCheck.equals("no")) {
+            spin();
+            return result();
+        }
+        else {
+            return wheel.get(1);
+        }
     }
 
 

@@ -69,4 +69,12 @@ public class Interface {
     public void notEnoughMoney() {
         System.out.println("Sorry you do not have enough money to make that bet");
     }
+
+    public void askHold(int num) {
+        System.out.println("Would you like to hold column " + num);
+    }
+
+    public void askNudge(int num) {
+        System.out.println("Would you like to nudge column " + num);
+    }
 }
